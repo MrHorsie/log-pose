@@ -3,22 +3,30 @@ package com.logpose.api.model;
 
 import jakarta.persistence.*;
 
+/**
+ * A single release of a card: base print, alternate art (_p1), reprint (_r1), etc.
+ */
 @Entity
 @Table(name = "printings")
 public class Printing {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // ID from the data source, e.g. "OP01-001_p1"; unique per printing
+    @Column(nullable = false, unique = true)
     private String sourceId;
+
+    @Column(nullable = false)
     private String setCode;
+
+    private String setName;
+    private String rarity;
     private String imageUrl;
     private Integer blockNumber;
-    private boolean nonRotating;
 
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "card_id", nullable = false)
     private Card card;
 
@@ -40,14 +48,6 @@ public class Printing {
 
     public void setCard(Card card) {
         this.card = card;
-    }
-
-    public boolean isNonRotating() {
-        return nonRotating;
-    }
-
-    public void setNonRotating(boolean nonRotating) {
-        this.nonRotating = nonRotating;
     }
 
     public Integer getBlockNumber() {
@@ -72,6 +72,22 @@ public class Printing {
 
     public void setSetCode(String setCode) {
         this.setCode = setCode;
+    }
+
+    public String getSetName() {
+        return setName;
+    }
+
+    public void setSetName(String setName) {
+        this.setName = setName;
+    }
+
+    public String getRarity() {
+        return rarity;
+    }
+
+    public void setRarity(String rarity) {
+        this.rarity = rarity;
     }
 
     public String getSourceId() {

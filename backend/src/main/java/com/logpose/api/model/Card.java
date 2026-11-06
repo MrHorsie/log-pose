@@ -5,15 +5,26 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A gameplay card: the rules-relevant data shared by every printing of the same card number.
+ */
 @Entity
 @Table(name = "cards")
-
 public class Card {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Base card number from the data source, e.g. "OP01-001" (printings like "OP01-001_p1" group under it)
+    @Column(nullable = false, unique = true)
+    private String cardNumber;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String category;
 
     @ElementCollection
     @CollectionTable(name = "card_colors", joinColumns = @JoinColumn(name = "card_id"))
@@ -30,20 +41,19 @@ public class Card {
     @Column(name = "trait")
     private List<String> traits = new ArrayList<>();
 
-    private String category;
-    private String name;
     private Integer cost;
     private Integer power;
     private Integer counter;
-    private String rarity;
+
     @Column(columnDefinition = "TEXT")
     private String effectText;
 
-
+    @Column(columnDefinition = "TEXT")
+    private String triggerText;
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
+    @OrderBy("sourceId")
     private List<Printing> printings = new ArrayList<>();
-
 
     public Card() {
 
@@ -57,6 +67,13 @@ public class Card {
         this.id = id;
     }
 
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
 
     public String getEffectText() {
         return effectText;
@@ -66,12 +83,12 @@ public class Card {
         this.effectText = effectText;
     }
 
-    public String getRarity() {
-        return rarity;
+    public String getTriggerText() {
+        return triggerText;
     }
 
-    public void setRarity(String rarity) {
-        this.rarity = rarity;
+    public void setTriggerText(String triggerText) {
+        this.triggerText = triggerText;
     }
 
     public Integer getCounter() {
@@ -151,6 +168,13 @@ public class Card {
         printing.setCard(this);
     }
 
-
-
+    /**
+     * The printing whose source ID equals the card number (the original release), or the first printing.
+     */
+    public Printing getPrimaryPrinting() {
+        return printings.stream()
+                .filter(p -> cardNumber.equals(p.getSourceId()))
+                .findFirst()
+                .orElse(printings.isEmpty() ? null : printings.get(0));
+    }
 }

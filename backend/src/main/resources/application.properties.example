@@ -1,0 +1,12 @@
+# Copy to application.properties (git-ignored) and fill in your local database password.
+spring.application.name=log-pose-api
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/log_pose
+spring.datasource.username=postgres
+spring.datasource.password=CHANGE_ME
+
+# Flyway owns the schema (src/main/resources/db/migration); Hibernate only checks it matches the entities
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=false
+spring.jpa.open-in-view=false
+spring.jpa.properties.hibernate.default_batch_fetch_size=100
