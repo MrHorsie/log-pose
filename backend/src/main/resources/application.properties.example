@@ -10,3 +10,7 @@ spring.jpa.hibernate.ddl-auto=validate
 spring.jpa.show-sql=false
 spring.jpa.open-in-view=false
 spring.jpa.properties.hibernate.default_batch_fetch_size=100
+
+# Card data import (run with --logpose.import.enabled=true). Source defaults to a pinned commit of
+# MrHorsie/optcg-data on jsDelivr; set it to a local clone's "data" folder to import offline.
+# logpose.import.source=C:/path/to/optcg-data/data
