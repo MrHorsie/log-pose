@@ -1,0 +1,182 @@
+.status {
+  color: var(--text-muted);
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--danger);
+  border-radius: 8px;
+  background: var(--danger-bg);
+}
+
+.card {
+  display: grid;
+  grid-template-columns: minmax(240px, 380px) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .art {
+    max-width: 340px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+// Keep the art in view while scrolling long printing lists, but only in the two-column layout
+@media (min-width: 721px) {
+  .art {
+    position: sticky;
+    top: 1rem;
+  }
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+}
+
+.number {
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+
+.color {
+  font-weight: 600;
+}
+
+.color-red { color: var(--op-red); }
+.color-green { color: var(--op-green); }
+.color-blue { color: var(--op-blue); }
+.color-purple { color: var(--op-purple); }
+.color-black { color: var(--text); }
+.color-yellow { color: var(--op-yellow); }
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+
+  div {
+    min-width: 5.5rem;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+
+  dt {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+
+  dd {
+    margin: 0.1rem 0 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+}
+
+.effect {
+  line-height: 1.65;
+  padding: 0.9rem 1rem;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 8px 8px 0;
+}
+
+.trigger {
+  border-left-color: var(--op-yellow);
+}
+
+.keyword {
+  display: inline-block;
+  padding: 0 0.35rem;
+  margin: 0.1rem 0;
+  border-radius: 4px;
+  background: var(--surface-2);
+  font-weight: 600;
+  font-size: 0.92em;
+}
+
+.traits {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+
+  a {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      border-color: var(--accent);
+    }
+  }
+}
+
+.printings {
+  margin-top: 1.75rem;
+  // On very narrow screens the table scrolls on its own instead of widening the page
+  overflow-x: auto;
+
+  h2 {
+    font-size: 1.1rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.45rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  th {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  td:first-child {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  tr.selected {
+    background: var(--surface-2);
+  }
+}
+
+.set-name {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}

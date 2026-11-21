@@ -1,0 +1,49 @@
+<article class="syntax">
+  <h1>Search syntax</h1>
+  <p>
+    Type words to search card names, or a card number like <code>OP01-001</code>. Add filters to narrow it down. All
+    matching is case-insensitive.
+  </p>
+
+  <h2>Fields</h2>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Keyword</th>
+        <th scope="col">Meaning</th>
+        <th scope="col">Examples</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (field of fields; track field.keywords[0]) {
+        <tr>
+          <td>
+            @for (keyword of field.keywords; track keyword) {
+              <code>{{ keyword }}</code>
+            }
+          </td>
+          <td>{{ field.description }}</td>
+          <td>
+            @for (example of field.examples; track example) {
+              <a [routerLink]="['/']" [queryParams]="{ q: example }"><code>{{ example }}</code></a>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <h2>Combining filters</h2>
+  <dl>
+    <dt>Several terms</dt>
+    <dd>All must match: <a [routerLink]="['/']" [queryParams]="{ q: 'c:red t:character cost<=3' }"><code>c:red t:character cost&lt;=3</code></a></dd>
+    <dt><code>or</code></dt>
+    <dd>Either side matches: <a [routerLink]="['/']" [queryParams]="{ q: 'c:red or c:blue' }"><code>c:red or c:blue</code></a></dd>
+    <dt><code>( )</code></dt>
+    <dd>Group terms: <a [routerLink]="['/']" [queryParams]="{ q: '(c:red or c:green) t:leader' }"><code>(c:red or c:green) t:leader</code></a></dd>
+    <dt><code>-</code></dt>
+    <dd>Exclude: <a [routerLink]="['/']" [queryParams]="{ q: 'luffy -t:character' }"><code>luffy -t:character</code></a></dd>
+    <dt><code>" "</code></dt>
+    <dd>Match a phrase with spaces or symbols: <a [routerLink]="['/']" [queryParams]="{ q: 'o:&quot;DON!! x2&quot;' }"><code>o:"DON!! x2"</code></a></dd>
+  </dl>
+</article>

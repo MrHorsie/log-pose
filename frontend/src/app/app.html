@@ -1,0 +1,42 @@
+<header class="site-header">
+  <div class="inner">
+    <a routerLink="/" class="brand" aria-label="Log Pose home">
+      <img class="brand-logo" src="logo.png" alt="" width="1040" height="360" />
+      Log Pose
+    </a>
+    <form class="search" role="search" (submit)="search($event)">
+      <input
+        type="search"
+        name="q"
+        aria-label="Search cards"
+        placeholder='Search cards, e.g. c:red t:character cost<=3'
+        autocomplete="off"
+        spellcheck="false"
+        [value]="query()"
+        (input)="query.set($any($event.target).value)"
+      />
+      <button type="submit">Search</button>
+    </form>
+    <nav>
+      <a routerLink="/syntax">Syntax</a>
+    </nav>
+  </div>
+</header>
+
+<main class="inner">
+  <router-outlet />
+</main>
+
+<footer class="site-footer inner">
+  <p>
+    Log Pose is an unofficial, non-commercial fan project and is not affiliated with Bandai. Card text and images ©
+    Eiichiro Oda / Shueisha, Toei Animation, and Bandai Namco Entertainment Inc. Images are reduced-size copies of the
+    official sample images. Card data via
+    <a href="https://github.com/michalkiral/optcg-data" rel="noopener" target="_blank">optcg-data</a>.
+  </p>
+  <p>
+    Rights holders: to request removal of any content,
+    <a href="mailto:horsiejonesathan@gmail.com?subject=Log%20Pose%20content%20removal%20request">email us</a> and it
+    will be taken down promptly.
+  </p>
+</footer>

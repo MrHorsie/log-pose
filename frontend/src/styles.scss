@@ -1,0 +1,105 @@
+// Light gray-lavender palette inspired by the SNES console; every text color passes WCAG AA on --bg
+:root {
+  color-scheme: light;
+
+  --bg: #c8c5d3;
+  --surface: #dddbe5;
+  --surface-2: #b6b2c6;
+  --border: #9d98b2;
+  --text: #1e1c2b;
+  --text-muted: #4b4763;
+  --accent: #4c3fa0;
+  --danger: #8a1c22;
+  --danger-bg: #e3d3d9;
+
+  --op-red: #951e24;
+  --op-green: #165a32;
+  --op-blue: #1a4790;
+  --op-purple: #5f2f8f;
+  --op-yellow: #5f4b00;
+
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas, monospace;
+}
+
+// Some coding fonts draw "<=" as "≤"; search syntax must show exactly what the user types
+code,
+input {
+  font-variant-ligatures: none;
+  font-feature-settings: 'calt' 0, 'liga' 0;
+}
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+}
+
+a {
+  color: var(--accent);
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  padding: 0.05rem 0.3rem;
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+
+input,
+select,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+input,
+select {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+button {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-2);
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: var(--accent);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &[type='submit'] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+}

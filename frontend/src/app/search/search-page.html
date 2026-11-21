@@ -1,0 +1,89 @@
+@let p = params();
+
+@if (!p) {
+  <section class="home">
+    <h1>Search every One Piece card</h1>
+    <p class="lede">
+      Combine filters like <code>c:red</code>, <code>cost&lt;=3</code> and <code>o:"DON!!"</code> in the search bar
+      above. <a routerLink="/syntax">Full syntax guide</a>
+    </p>
+    <ul class="examples">
+      @for (example of examples; track example.query) {
+        <li>
+          <a [routerLink]="['/']" [queryParams]="{ q: example.query }">
+            <code>{{ example.query }}</code>
+            <span>{{ example.description }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </section>
+} @else if (error(); as message) {
+  <div class="error" role="alert">
+    <strong>Couldn't run that search.</strong>
+    <span>{{ message }}</span>
+    <a routerLink="/syntax">See the search syntax</a>
+  </div>
+} @else if (page(); as page) {
+  <div class="toolbar">
+    <p class="count">
+      @if (page.totalItems === 0) {
+        No cards match <code>{{ p.q }}</code>.
+      } @else {
+        {{ rangeLabel() }}
+      }
+    </p>
+    <div class="sort">
+      <label>
+        Sort by
+        <select (change)="changeSort($any($event.target).value)">
+          @for (order of sortOrders; track order) {
+            <option [value]="order" [selected]="order === p.order">{{ order }}</option>
+          }
+        </select>
+      </label>
+      <button
+        type="button"
+        class="dir"
+        [attr.aria-label]="p.dir === 'asc' ? 'Sort descending' : 'Sort ascending'"
+        (click)="changeDirection(p.dir === 'asc' ? 'desc' : 'asc')"
+      >
+        {{ p.dir === 'asc' ? '↑ Asc' : '↓ Desc' }}
+      </button>
+    </div>
+  </div>
+
+  <ul class="grid">
+    @for (card of page.items; track card.cardNumber) {
+      <li>
+        <a [routerLink]="['/card', card.cardNumber]" [title]="card.name">
+          <app-card-image
+            [src]="card.imageUrl"
+            [name]="card.name"
+            [cardNumber]="card.cardNumber"
+            [colors]="card.colors"
+            [details]="describe(card)"
+          />
+        </a>
+      </li>
+    }
+  </ul>
+
+  @if (page.totalPages > 1) {
+    <nav class="pager" aria-label="Pages">
+      <button type="button" [disabled]="page.page === 0" (click)="goToPage(page.page - 1)">
+        ← Previous
+      </button>
+      <span>Page {{ page.page + 1 }} of {{ page.totalPages }}</span>
+      <button
+        type="button"
+        [disabled]="page.page + 1 >= page.totalPages"
+        (click)="goToPage(page.page + 1)"
+      >
+        Next →
+      </button>
+    </nav>
+  }
+} @else {
+  <p class="status">Searching…</p>
+}

@@ -1,0 +1,138 @@
+@if (error(); as message) {
+  <div class="error" role="alert">
+    <strong>Couldn't load this card.</strong>
+    <span>{{ message }}</span>
+    <a routerLink="/">Back to search</a>
+  </div>
+} @else if (card(); as card) {
+  <article class="card">
+    <div class="art">
+      <app-card-image
+        [src]="selectedPrinting()?.imageUrl ?? null"
+        [name]="card.name"
+        [cardNumber]="card.cardNumber"
+        [colors]="card.colors"
+        [details]="selectedPrinting()?.sourceId ?? ''"
+        [eager]="true"
+      />
+    </div>
+
+    <div class="info">
+      <header>
+        <h1>{{ card.name }}</h1>
+        <p class="subtitle">
+          <a [routerLink]="['/']" [queryParams]="{ q: 't:' + card.category.toLowerCase() }">{{ card.category }}</a>
+          ·
+          @for (color of card.colors; track color; let last = $last) {
+            <a
+              class="color color-{{ color.toLowerCase() }}"
+              [routerLink]="['/']"
+              [queryParams]="{ q: 'c:' + color.toLowerCase() }"
+              >{{ color }}</a
+            >{{ last ? '' : ' / ' }}
+          }
+          · <span class="number">{{ card.cardNumber }}</span>
+        </p>
+      </header>
+
+      <dl class="stats">
+        @if (card.cost !== null) {
+          <div>
+            <dt>{{ costLabel() }}</dt>
+            <dd>{{ card.cost }}</dd>
+          </div>
+        }
+        @if (card.power !== null) {
+          <div>
+            <dt>Power</dt>
+            <dd>{{ card.power }}</dd>
+          </div>
+        }
+        @if (card.counter !== null) {
+          <div>
+            <dt>Counter</dt>
+            <dd>+{{ card.counter }}</dd>
+          </div>
+        }
+        @if (card.attributes.length) {
+          <div>
+            <dt>Attribute</dt>
+            <dd>
+              @for (attribute of card.attributes; track attribute; let last = $last) {
+                <a [routerLink]="['/']" [queryParams]="{ q: 'a:' + attribute.toLowerCase() }">{{ attribute }}</a
+                >{{ last ? '' : ', ' }}
+              }
+            </dd>
+          </div>
+        }
+      </dl>
+
+      @if (effectParts().length) {
+        <p class="effect">
+          @for (part of effectParts(); track $index) {
+            @if (part.keyword) {
+              <span class="keyword">{{ part.text }}</span>
+            } @else {
+              {{ part.text }}
+            }
+          }
+        </p>
+      }
+
+      @if (triggerParts().length) {
+        <p class="effect trigger">
+          @for (part of triggerParts(); track $index) {
+            @if (part.keyword) {
+              <span class="keyword">{{ part.text }}</span>
+            } @else {
+              {{ part.text }}
+            }
+          }
+        </p>
+      }
+
+      @if (card.traits.length) {
+        <ul class="traits" aria-label="Traits">
+          @for (trait of card.traits; track trait) {
+            <li>
+              <a [routerLink]="['/']" [queryParams]="{ q: 'trait:' + quoted(trait) }">{{ trait }}</a>
+            </li>
+          }
+        </ul>
+      }
+
+      <section class="printings">
+        <h2>Printings ({{ card.printings.length }})</h2>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Set</th>
+              <th scope="col">Rarity</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (printing of card.printings; track printing.sourceId) {
+              <tr [class.selected]="printing.sourceId === selectedPrinting()?.sourceId">
+                <td>
+                  <a [routerLink]="[]" [queryParams]="{ print: printing.sourceId }" replaceUrl>{{
+                    printing.sourceId
+                  }}</a>
+                </td>
+                <td>
+                  <a [routerLink]="['/']" [queryParams]="{ q: 'set:' + printing.setCode }">{{ printing.setCode }}</a>
+                  @if (printing.setName) {
+                    <span class="set-name">{{ printing.setName }}</span>
+                  }
+                </td>
+                <td>{{ printing.rarity }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </article>
+} @else {
+  <p class="status">Loading…</p>
+}

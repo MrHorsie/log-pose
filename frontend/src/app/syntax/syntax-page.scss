@@ -1,0 +1,55 @@
+.syntax {
+  max-width: 900px;
+  line-height: 1.6;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.6rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+th {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+td code,
+td a {
+  margin-right: 0.4rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  thead {
+    display: none;
+  }
+
+  tr {
+    display: block;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    display: block;
+    border: 0;
+    padding: 0.15rem 0;
+  }
+}
+
+dt {
+  font-weight: 600;
+  margin-top: 0.75rem;
+}
+
+dd {
+  margin: 0.15rem 0 0;
+}
